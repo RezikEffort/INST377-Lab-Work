@@ -61,12 +61,13 @@ router
         // so... 'is there a restaurant with pizza (or steak or so on) in the name in this data set'
         reply = req.foodServiceData.filter((item) => {
           // This function has been split to be easier to read, although in practice it could be one line
-          const lowerCaseName = item.name.toLowerCase(); // these need to be in the same case for easier comparison
+          const lowerCaseName = item.state.toLowerCase(); // these need to be in the same case for easier comparison
           const lowerCaseQuery = req.query?.resto.toLowerCase(); // capital letters and lowercase letters are different characters to a computer
 
           // Once both our functions are in lower case
           // we can check if the current item's name includes the query
           // And we return the _first_ item that is "true" from that check
+
           return lowerCaseName.includes(lowerCaseQuery);
 
           // If we were writing a "find," this would return the first single object that matched the test
@@ -78,12 +79,13 @@ router
       } else {
         reply = req.foodServiceData;
       }
-
+    
       /*
         Here we're closing the request to the route by passing back our "reply":
         All array items if we have no query
         Only the matches if we have a query - which means nothing if the query did not match anything
       */
+ 
       res.json({ data: reply });
     } catch (err) { // Catch: if our above code breaks, this will fire, and send a response to our client saying what happened.
       console.log(err); // Show the server our error
