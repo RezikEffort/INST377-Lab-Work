@@ -69,7 +69,7 @@ async function mainEvent() {
   /*
     Let's get some data from the API - it will take a second or two to load
     This next line goes to the request for 'GET' in the file at /server/routes/foodServiceRoutes.js
-    It's at about line 27 - go have a look and see what we're retrieving and sending back.
+    It's at about line 27 - go have a   look and see what we're retrieving and sending back.
    */
   const results = await fetch('/api/foodServicePG');
   const arrayFromJson = await results.json(); // here is where we get the data from our request as JSON
