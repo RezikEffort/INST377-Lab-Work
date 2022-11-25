@@ -10,9 +10,24 @@
     Under this comment place any utility functions you need - like an inclusive random number selector
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 */
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
+}
 
 function injectHTML(list) {
   console.log('fired injectHTML');
+  const target = document.querySelector('#restaurant_list');
+  target.innerHTML = '';
+
+  const listEl = document.createElement('ol');
+  target.appendChild(listEl);
+  list.forEach((item) => {
+    const el = document.createElement('li');
+    el.innerText = item.name;
+    listEl.appendChild(el);
+  });
   /*
   ## JS and HTML Injection
     There are a bunch of methods to inject text or HTML into a document using JS
@@ -30,9 +45,18 @@ function injectHTML(list) {
 }
 
 function processRestaurants(list) {
-  console.log('fired restaurants list');
+}
 
-  /*
+function filterList(list, filterInputValue) {
+  return list.filter((item) => {
+    if (!item.name) { return; }
+    const lowercaseName = item.name.toLowerCase();
+    const lowercaseQuery = filterInputValue.toLowerCase();
+    return lowercaseName.includes(lowercaseQuery);
+  });
+}
+
+/*
     ## Process Data Separately From Injecting It
       This function should accept your 1,000 records
       then select 15 random records
@@ -50,7 +74,6 @@ function processRestaurants(list) {
     - Return only their name, category, and location
     - Return the new list of 15 restaurants so we can work on it separately in the HTML injector
   */
-}
 
 async function mainEvent() {
   /*
@@ -92,25 +115,34 @@ async function mainEvent() {
   // This IF statement ensures we can't do anything if we don't have information yet
   if (arrayFromJson.data?.length > 0) { // the question mark in this means "if this is set at all"
     submit.style.display = 'block'; // let's turn the submit button back on by setting it to display as a block when we have data available
+
     // let's hide the load botton now that we have some data to manipualate
-    loadAnimation.classList.remove('.lds-ellipsis');
-    loadAnimation.classList.add('.lds-ellipsis_hidden'); // lets us turn back the submit button once we have the data
+    loadAnimation.classList.remove('lds-ellipsis');
+    loadAnimation.classList.add('lds-ellipsis_hidden'); // lets us turn back the submit button once we have the data
+
+    let currentList = [];
+
+    form.addEventListener('input', (event) => {
+      console.log(event.target.value);
+      const newfilteredList = filterList(currentList, event.target.value);
+      injectHTML(newfilteredList);
+    });
 
     // And here's an eventListener! It's listening for a "submit" button specifically being clicked
     // this is a synchronous event event, because we already did our async request above, and waited for it to resolve
     form.addEventListener('submit', (submitEvent) => {
-      // This is needed to stop our page from changing to a new URL even though it heard a GET request
+    // This is needed to stop our page from changing to a new URL even though it heard a GET request
       submitEvent.preventDefault();
 
       // This constant will have the value of your 15-restaurant collection when it processes
-      const restaurantList = processRestaurants(arrayFromJson.data);
+      currentList = processRestaurants(arrayFromJson.data);
 
       // And this function call will perform the "side effect" of injecting the HTML list for you
-      injectHTML(restaurantList);
+      injectHTML(currentList);
 
-      // By separating the functions, we open the possibility of regenerating the list
-      // without having to retrieve fresh data every time
-      // We also have access to some form values, so we could filter the list based on name
+    // By separating the functions, we open the possibility of regenerating the list
+    // without having to retrieve fresh data every time
+    // We also have access to some form values, so we could filter the list based on name
     });
   }
 }
