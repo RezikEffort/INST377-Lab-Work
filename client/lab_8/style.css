@@ -322,7 +322,15 @@
         align-items: center;
       }
   }
+
+  /* MAP css */
+
+  #map { height: 180px; }
   
+/* New code bonus: pure css data loading icon
+
+*/
+
   
   .lds-ellipsis {
       display: inline-block;

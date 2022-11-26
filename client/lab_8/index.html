@@ -11,7 +11,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abdulrezak Mohamed For INST377 Labs</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin=""/>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
 </head>
 
 <body>
@@ -28,11 +34,12 @@
                             <input type="text" name="resto" id="resto">
                         </div> 
                         <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-                        <button type="submit" id="get-resto">Submit</button>
+                        <button type="submit" id="get-resto">Change restaurants</button>
                     </form>
                 </div>
                 <div class="right_section">
                     <h3>Local Restaurants</h3>
+                    <div id="map"></div>
                     <div class="box" id = "restaurant_list">
                         <!--descritpion box -->
                         A list of local restaurants from an API
