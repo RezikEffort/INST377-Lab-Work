@@ -17,7 +17,7 @@ export async function loadFoodServiceData(req, res, next) {
 
     const reply = json.filter((item) => Boolean(item.geocoded_column_1)).filter((item) => Boolean(item.name));
 
-    console.log('Results in foodServiceData middleware', json.length); // let's check that something's there before we return it
+    console.log('Results in foodServiceData middleware', reply, json.length); // let's check that something's there before we return it
     req.foodServiceData = json; // and let's _attach_ the data to our request object here
     next();
   } catch (err) {
